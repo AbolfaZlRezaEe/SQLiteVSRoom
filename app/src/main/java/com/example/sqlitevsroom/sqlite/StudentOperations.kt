@@ -120,4 +120,24 @@ object StudentOperations {
             selectionArg
         )
     }
+
+    fun updateStudent(
+        database: StudentDatabaseHelper,
+        student: Student
+    ): Int {
+        val contentValue = ContentValues().apply {
+            put(StudentQueryObject.COLUMN_STUDENT_ID, student.studentId)
+            put(StudentQueryObject.COLUMN_FIRST_NAME, student.firstName)
+            put(StudentQueryObject.COLUMN_LAST_NAME, student.lastName)
+        }
+
+        val selection = "${student.studentId} = ?"
+        val selectionArg = arrayOf("${student.studentId}")
+        return database.writableDatabase.update(
+            StudentQueryObject.TABLE_NAME,
+            contentValue,
+            selection,
+            selectionArg
+        )
+    }
 }
