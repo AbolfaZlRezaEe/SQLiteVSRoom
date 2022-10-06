@@ -1,11 +1,11 @@
 package com.example.sqlitevsroom.sqlite
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Student(
-    var studentId: Long = 0,
+    var studentId: Int = 0,
     var firstName: String,
     var lastName: String
 ) : Parcelable

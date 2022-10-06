@@ -8,6 +8,16 @@ import com.example.sqlitevsroom.sqlite.Student
 
 class StudentAdapter : RecyclerView.Adapter<StudentViewHolder>() {
     private var students: MutableList<Student> = mutableListOf()
+    private var clickListenerCallback: ((student: Student) -> Unit)? = null
+    private var onLongClickListenerCallback: ((student: Student) -> Unit)? = null
+
+    fun setStudentClickListener(clickListenerCallback: (student: Student) -> Unit) {
+        this.clickListenerCallback = clickListenerCallback
+    }
+
+    fun setStudentLongClickListener(onLongClickListenerCallback: (student: Student) -> Unit) {
+        this.onLongClickListenerCallback = onLongClickListenerCallback
+    }
 
     fun addStudents(students: List<Student>) {
         this.students.clear()
@@ -38,6 +48,9 @@ class StudentAdapter : RecyclerView.Adapter<StudentViewHolder>() {
     override fun onCreateViewHolder(viewGroup: ViewGroup, p1: Int): StudentViewHolder {
         return StudentViewHolder(
             ItemStudentBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
+        ).setupClickListener(
+            { position -> clickListenerCallback?.invoke(students[position]) },
+            { position -> onLongClickListenerCallback?.invoke(students[position]) }
         )
     }
 
@@ -47,5 +60,19 @@ class StudentAdapter : RecyclerView.Adapter<StudentViewHolder>() {
 
     override fun getItemCount(): Int {
         return students.size
+    }
+
+    fun <T : RecyclerView.ViewHolder> T.setupClickListener(
+        onClick: (position: Int) -> Unit,
+        onLongClick: (position: Int) -> Unit
+    ): T {
+        itemView.setOnClickListener {
+            onClick.invoke(adapterPosition)
+        }
+        itemView.setOnLongClickListener {
+            onLongClick.invoke(adapterPosition)
+            return@setOnLongClickListener false
+        }
+        return this
     }
 }

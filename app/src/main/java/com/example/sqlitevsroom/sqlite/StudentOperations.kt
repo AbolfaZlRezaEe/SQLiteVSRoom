@@ -6,12 +6,10 @@ object StudentOperations {
 
     fun insertStudent(
         database: StudentDatabaseHelper,
-        id: Int,
         firstName: String,
         lastName: String
-    ): Long {
+    ): Long /* returns the id of row that database inserted into it */ {
         val newStudent = ContentValues().apply {
-            put(StudentQueryObject.COLUMN_STUDENT_ID, id)
             put(StudentQueryObject.COLUMN_FIRST_NAME, firstName)
             put(StudentQueryObject.COLUMN_LAST_NAME, lastName)
         }
@@ -47,7 +45,7 @@ object StudentOperations {
             val studentLastNameColumnIndex =
                 cursor.getColumnIndex(StudentQueryObject.COLUMN_LAST_NAME)
 
-            val studentId = cursor.getLong(studentIdColumnIndex)
+            val studentId = cursor.getInt(studentIdColumnIndex)
             val studentFirstName = cursor.getString(studentFirstNameColumnIndex)
             val studentLastName = cursor.getString(studentLastNameColumnIndex)
 
@@ -90,7 +88,7 @@ object StudentOperations {
                 val studentLastNameColumnIndex =
                     cursor.getColumnIndex(StudentQueryObject.COLUMN_LAST_NAME)
 
-                val studentId = cursor.getLong(studentIdColumnIndex)
+                val studentId = cursor.getInt(studentIdColumnIndex)
                 val studentFirstName = cursor.getString(studentFirstNameColumnIndex)
                 val studentLastName = cursor.getString(studentLastNameColumnIndex)
 
@@ -110,34 +108,33 @@ object StudentOperations {
 
     fun deleteStudent(
         database: StudentDatabaseHelper,
-        id: Long
-    ): Int {
+        id: Int
+    ): Boolean {
         val selection = "${StudentQueryObject.COLUMN_STUDENT_ID} = ?"
         val selectionArg = arrayOf("$id")
         return database.writableDatabase.delete(
             StudentQueryObject.TABLE_NAME,
             selection,
             selectionArg
-        )
+        ) > 0
     }
 
     fun updateStudent(
         database: StudentDatabaseHelper,
         student: Student
-    ): Int {
+    ): Boolean {
         val contentValue = ContentValues().apply {
-            put(StudentQueryObject.COLUMN_STUDENT_ID, student.studentId)
             put(StudentQueryObject.COLUMN_FIRST_NAME, student.firstName)
             put(StudentQueryObject.COLUMN_LAST_NAME, student.lastName)
         }
 
-        val selection = "${student.studentId} = ?"
+        val selection = "${student.studentId} LIKE ?"
         val selectionArg = arrayOf("${student.studentId}")
         return database.writableDatabase.update(
             StudentQueryObject.TABLE_NAME,
             contentValue,
             selection,
             selectionArg
-        )
+        ) > 0
     }
 }

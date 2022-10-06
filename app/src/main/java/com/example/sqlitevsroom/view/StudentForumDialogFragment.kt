@@ -4,25 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.example.sqlitevsroom.databinding.StudentForumFragmentBinding
 import com.example.sqlitevsroom.sqlite.Student
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class StudentForumFragment : Fragment() {
+class StudentForumDialogFragment : BottomSheetDialogFragment() {
     private var _binding: StudentForumFragmentBinding? = null
     private val binding get() = _binding!!
 
     private var student: Student? = null
-    private var onSubmitClickListener: ((student: Student) -> Unit)? = null
+    private var onSubmitClickListener: ((student: Student, bottomSheet: StudentForumDialogFragment) -> Unit)? =
+        null
 
     companion object {
         private const val KEY_STUDENT_INFORMATION = "STUDENT_INFORMATION_KEY"
 
         fun newInstance(
-            student: Student,
-            submitClickListener: (student: Student) -> Unit
-        ): StudentForumFragment {
-            return StudentForumFragment().apply {
+            student: Student? = null,
+            submitClickListener: (student: Student, bottomSheet: StudentForumDialogFragment) -> Unit
+        ): StudentForumDialogFragment {
+            return StudentForumDialogFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(KEY_STUDENT_INFORMATION, student)
                 }
@@ -54,6 +55,7 @@ class StudentForumFragment : Fragment() {
                 || binding.lastNameEditText.length() == 0
             ) {
                 binding.warningTextView.visibility = View.VISIBLE
+                binding.warningTextView.text = "You should fill all information!"
                 return@setOnClickListener
             } else {
                 binding.warningTextView.visibility = View.GONE
@@ -70,7 +72,7 @@ class StudentForumFragment : Fragment() {
                 )
             }
             if (onSubmitClickListener != null) {
-                onSubmitClickListener?.invoke(student!!)
+                onSubmitClickListener?.invoke(student!!, this)
             }
         }
     }
@@ -86,7 +88,12 @@ class StudentForumFragment : Fragment() {
         }
     }
 
-    fun setSubmitClickListener(callBack: (student: Student) -> Unit) {
+    fun setSubmitClickListener(callBack: (student: Student, bottomSheet: StudentForumDialogFragment) -> Unit) {
         this.onSubmitClickListener = callBack
+    }
+
+    fun setError(message: String) {
+        binding.warningTextView.visibility = View.VISIBLE
+        binding.warningTextView.text = message
     }
 }

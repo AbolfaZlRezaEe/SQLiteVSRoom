@@ -15,7 +15,6 @@ class StudentDatabaseHelper(
     StudentQueryObject.DATABASE_VERSION
 ) {
 
-
     override fun onCreate(database: SQLiteDatabase?) {
         database?.execSQL(StudentQueryObject.QUERY_CREATE_TABLE)
     }
@@ -29,5 +28,10 @@ class StudentDatabaseHelper(
 
     override fun onDowngrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         super.onDowngrade(db, oldVersion, newVersion)
+    }
+
+    // Create a new thread for all operations that we wanna do
+    fun doOperation(runnable: Runnable) {
+        Thread(runnable).start()
     }
 }

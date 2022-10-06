@@ -13,7 +13,7 @@ object StudentQueryObject {
     // Queries
     const val QUERY_CREATE_TABLE =
         "CREATE TABLE $TABLE_NAME (" +
-                "$COLUMN_STUDENT_ID LONG PRIMARY KEY," +
+                "$COLUMN_STUDENT_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "$COLUMN_FIRST_NAME TEXT," +
                 "$COLUMN_LAST_NAME TEXT)"
 
