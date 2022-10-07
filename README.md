@@ -2,6 +2,8 @@
 
 This project created for comparing **SQLite** and **Room** library. You can download the project, build and run it, and see the code and read this article to underestand more SQLite and Room in general. I hope this is help you to learn something new at the end. enjoy :)
 
+> for using this repository, is better to know **Kotlin language** and enough knowladge about **Android development**
+
 ## :question: In General, What is SQLite?
 
 SQLite is a library that is used to do SQL operations like **Read, Write, etc…** SQLite wrote with C programming language. as its own documentation says, it has a few third-party libraries that are used in the source code, and in the end, it doesn’t have many dependencies to the other libraries to build and run! also, the source code of this project is free and open to use. We can check it out at this link.
@@ -51,7 +53,8 @@ WHERE student_id = 5
 DELETE FROM tbl_student WHERE student_id = 2
 ```
 
-- if you don’t have conditions for the delete query, this query delete all informations from your table in database!
+> if you don’t have conditions for the delete query, this query delete all informations from your table in database!
+
 - Search in items of a Table:
 
 ```sql
@@ -74,16 +77,15 @@ these are all features that SQLite gave us to build a strong Database in our app
 
 after all these explanations, it’s time to go throw the code and implement SQLite in an application to better understand the code.
 
-- It’s good to mention that we explain SQLite in Kotlin language in Android!
+> It’s good to mention that we explain SQLite in Kotlin language in Android!
 
 so, SQLite has a package in android libraries that cames with core functionalities in that. [as Android documentation explains it](https://developer.android.com/training/data-storage/sqlite), we should have a class that extends `SQLiteOpenHelper`. this class contains all functionalities that We should have to do any operations on the database. when we create our class for maintaining the database, we should override three functions that contain the main functionality of the database: 
 
 - `onCreate` function: when we create an instance of our class, this function is called to let you create your database into your application. so you should call create table query in this function.
 - `onUpgrade` function: let’s think about it, when your application grows up, you might change your database and table structure, so you should have the capability to migrate from the old one to the new one. this is when this function comes in. you can write your migration queries and functionalities here.
 - `onDowngrade` function: It is clear when you have migration for your database, you should have queries and functionalities for downgrading the database if needed.
-- Do we have version control for our database?
-    
-    of course, we have. for managing upgrade and downgrade functionalities and database control, we should have a version for our database. you can pass this value in the `SQLiteOpenHelper` constructor. for more information about `SQLiteOpenHelper`, [you can read this documentation](https://developer.android.com/training/data-storage/sqlite#DbHelper).
+> Do we have version control for our database?
+> of course, we have. for managing upgrade and downgrade functionalities and database control, we should have a version for our database. you can pass this value in the `SQLiteOpenHelper` constructor. for more information about `SQLiteOpenHelper`, [you can read this documentation](https://developer.android.com/training/data-storage/sqlite#DbHelper).
     
 
 ### Inserting on the Database
@@ -110,9 +112,8 @@ fun insertStudent(
     }
 ```
 
-- What are `readableDatabase` and `WriteableDatabase`?
-    
-    It’s a good question. as you can guess if you wanna read data from the database, you must use the `readableDatabase` function and have a query to get data from the database. and also for writing into the database, you must use `writableDatabase`. but be careful, these two functions are two heavy for Main-Thread in Android. you should run these operations on a different thread.
+> What are `readableDatabase` and `WriteableDatabase`?
+> It’s a good question. as you can guess if you wanna read data from the database, you must use the `readableDatabase` function and have a query to get data from the database. and also for writing into the database, you must use `writableDatabase`. but be careful, these two functions are two heavy for Main-Thread in Android. you should run these operations on a different thread.
     
 
 ### Updating a row on the Database
