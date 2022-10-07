@@ -21,12 +21,21 @@ class MainActivity : AppCompatActivity() {
         binding.sqliteMaterialButton.setOnClickListener {
             changeVisibilityOfLayouts(true)
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, SQLiteFragment::class.java, null).commit()
+                .replace(
+                    R.id.fragmentContainer,
+                    SQLiteFragment(),
+                    SQLiteFragment::class.java.name
+                ).commit()
         }
+
         binding.roomMaterialButton.setOnClickListener {
             changeVisibilityOfLayouts(true)
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, RoomFragment::class.java, null).commit()
+                .replace(
+                    R.id.fragmentContainer,
+                    RoomFragment(),
+                    RoomFragment::class.java.name
+                ).commit()
         }
     }
 
@@ -41,6 +50,17 @@ class MainActivity : AppCompatActivity() {
             binding.sqliteMaterialButton.visibility = View.VISIBLE
             binding.roomMaterialButton.visibility = View.VISIBLE
             binding.titleTextView.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onBackPressed() {
+        // Remove fragments first, if we have...
+        val fragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
+        if (fragment != null) {
+            supportFragmentManager.beginTransaction().remove(fragment).commit()
+            changeVisibilityOfLayouts(false)
+        } else {
+            super.onBackPressed()
         }
     }
 }
