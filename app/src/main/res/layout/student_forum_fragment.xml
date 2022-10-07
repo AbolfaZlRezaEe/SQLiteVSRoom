@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:cardBackgroundColor="@color/white"
+    app:cardBackgroundColor="@color/lightOrange"
     app:cardCornerRadius="15dp"
     app:cardElevation="0dp">
 
@@ -19,22 +19,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:fontFamily="@font/roboto_bold"
             android:gravity="center"
             android:lines="1"
-            android:text="Add your student"
-            android:textColor="@color/black"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+            android:text="@string/addYourStudent"
+            android:textColor="@color/blackOrange"
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/warningTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:textColor="#FF3030"
+            android:fontFamily="@font/roboto_light"
+            android:text="@string/youShouldFillAllInformation"
+            android:textColor="@color/red"
             android:textSize="14sp"
             android:visibility="gone"
-            android:text="You should fill all information!"
             tools:visibility="visible" />
 
         <com.google.android.material.card.MaterialCardView
@@ -43,10 +44,10 @@
             android:layout_height="64dp"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
-            android:elevation="0dp"
             android:visibility="gone"
-            app:cardBackgroundColor="#D5D5D5"
+            app:cardBackgroundColor="@color/normal50Orange"
             app:cardCornerRadius="32dp"
+            app:cardElevation="0dp"
             tools:visibility="visible">
 
             <TextView
@@ -54,7 +55,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="@color/black"
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="@color/blackOrange"
                 android:textSize="32sp"
                 tools:text="5" />
 
@@ -67,10 +69,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:background="@drawable/edittext_background"
-            android:hint="FirstName"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto_medium"
+            android:hint="@string/firstName"
+            android:lines="1"
             android:minHeight="56dp"
             android:padding="16dp"
-            android:textColor="@color/black"
+            android:textColor="@color/lightOrange"
+            android:textColorHint="@color/lightOrange"
             android:textSize="16sp"
             tools:text="Abolfazl" />
 
@@ -80,10 +86,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:background="@drawable/edittext_background"
-            android:hint="LastName"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto_medium"
+            android:hint="@string/lastName"
+            android:lines="1"
             android:minHeight="56dp"
             android:padding="16dp"
-            android:textColor="@color/black"
+            android:textColor="@color/lightOrange"
+            android:textColorHint="@color/lightOrange"
             android:textSize="16sp"
             tools:text="Rezaei" />
 
@@ -92,8 +102,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:fontFamily="@font/roboto_medium"
             android:minHeight="56dp"
-            android:text="Save"
+            android:text="@string/save"
+            android:textColor="@color/lightOrange"
+            app:backgroundTint="@color/blackOrange"
             app:cornerRadius="15dp" />
 
     </LinearLayout>

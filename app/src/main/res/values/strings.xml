@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">SQLiteVSRoom</string>
+    <string name="addYourStudent">Add your student</string>
+    <string name="youShouldFillAllInformation">You should fill all information!</string>
+    <string name="firstName">FirstName</string>
+    <string name="lastName">LastName</string>
+    <string name="save">Save</string>
+    <string name="sqlDatabase">SQL Database</string>
+    <string name="roomDatabase">Room Database</string>
+    <string name="emptyStateMessage">We don\'t have any student at the database</string>
+    <string name="addStudent">Add Student</string>
+    <string name="workWithSqlite">Work with SQLite</string>
+    <string name="workWithRoom">Work with Room</string>
+    <string name="updatingFailedMessage">We had a problem on updating student information</string>
+    <string name="deletingFailedMessage">We had a problem on deleting user information</string>
+    <string name="insertingFailedMessage">We had a problem on inserting student on table!</string>
+    <string name="chooseDatabaseTitle">Choose which way do you want for using application?</string>
 </resources>

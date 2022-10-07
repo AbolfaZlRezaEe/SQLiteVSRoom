@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,41 +7,54 @@
     android:layout_marginStart="16dp"
     android:layout_marginTop="4dp"
     android:layout_marginEnd="16dp"
-    android:layout_marginBottom="4dp">
+    android:layout_marginBottom="4dp"
+    app:cardBackgroundColor="@color/normal50Orange"
+    app:cardCornerRadius="15dp"
+    app:cardElevation="0dp">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/id_material_card_view"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:elevation="0dp"
-        app:cardBackgroundColor="#D5D5D5"
-        app:cardCornerRadius="32dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/id_material_card_view"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:elevation="0dp"
+            app:cardBackgroundColor="@color/lightOrange"
+            app:cardCornerRadius="32dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/studentIdTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="@color/blackOrange"
+                android:textSize="32sp"
+                tools:text="5" />
+
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
-            android:id="@+id/studentIdTextView"
-            android:layout_width="wrap_content"
+            android:id="@+id/studentFullNameTextView"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="@color/black"
-            android:textSize="32sp"
-            tools:text="5" />
+            android:layout_marginStart="16dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto_medium"
+            android:lines="1"
+            android:textColor="@color/blackOrange"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/id_material_card_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/id_material_card_view"
+            app:layout_constraintTop_toTopOf="@+id/id_material_card_view"
+            tools:text="Abolfazl Rezaei" />
 
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/studentFullNameTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:ellipsize="end"
-        android:lines="1"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/id_material_card_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/id_material_card_view"
-        app:layout_constraintTop_toTopOf="@+id/id_material_card_view"
-        tools:text="Abolfazl Rezaei" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

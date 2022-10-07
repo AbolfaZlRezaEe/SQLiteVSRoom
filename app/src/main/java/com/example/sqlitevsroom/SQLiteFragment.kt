@@ -83,7 +83,7 @@ class SQLiteFragment : Fragment() {
                             }
                         } else {
                             requireActivity().runOnUiThread {
-                                bottomSheet.setError("We had a problem on updating student information")
+                                bottomSheet.setError(resources.getString(R.string.updatingFailedMessage))
                             }
                         }
                     }
@@ -103,7 +103,7 @@ class SQLiteFragment : Fragment() {
                 } else {
                     Snackbar.make(
                         binding.root,
-                        "We had a problem on deleting user information",
+                        resources.getString(R.string.deletingFailedMessage),
                         Snackbar.LENGTH_SHORT
                     ).show()
                 }
@@ -131,7 +131,7 @@ class SQLiteFragment : Fragment() {
                             }
                         } else {
                             requireActivity().runOnUiThread {
-                                bottomSheet.setError("We had a problem on inserting student on table!")
+                                bottomSheet.setError(resources.getString(R.string.insertingFailedMessage))
                             }
                         }
                     }
