@@ -2,7 +2,7 @@ package com.example.sqlitevsroom.view.recyclerView
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sqlitevsroom.databinding.ItemStudentBinding
-import com.example.sqlitevsroom.sqlite.Student
+import com.example.sqlitevsroom.model.dataclass.Student
 
 class StudentViewHolder(
     private val binding: ItemStudentBinding

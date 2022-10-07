@@ -1,9 +1,12 @@
-package com.example.sqlitevsroom
+package com.example.sqlitevsroom.view.activity
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.example.sqlitevsroom.R
 import com.example.sqlitevsroom.databinding.ActivityMainBinding
+import com.example.sqlitevsroom.view.fragments.RoomFragment
+import com.example.sqlitevsroom.view.fragments.SQLiteFragment
 
 class MainActivity : AppCompatActivity() {
 

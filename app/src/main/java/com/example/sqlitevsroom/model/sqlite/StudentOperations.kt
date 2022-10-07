@@ -1,6 +1,7 @@
-package com.example.sqlitevsroom.sqlite
+package com.example.sqlitevsroom.model.sqlite
 
 import android.content.ContentValues
+import com.example.sqlitevsroom.model.dataclass.Student
 
 object StudentOperations {
 
@@ -26,7 +27,7 @@ object StudentOperations {
         whichPropertyForCondition: String,
         valueOfPropertyShouldMatch: Array<String>,
         sortOrder: String = "${StudentQueryObject.COLUMN_STUDENT_ID} ASC"
-    ): Student? {
+    ): List<Student> {
         val cursor = database.readableDatabase.query(
             StudentQueryObject.TABLE_NAME,
             informationThatYouNeed,
@@ -36,31 +37,32 @@ object StudentOperations {
             null /* I don't wanna Having feature */,
             sortOrder
         )
+        val result = mutableListOf<Student>()
+        with(cursor) {
+            while (moveToNext()) {
+                val studentIdColumnIndex =
+                    cursor.getColumnIndex(StudentQueryObject.COLUMN_STUDENT_ID)
+                val studentFirstNameColumnIndex =
+                    cursor.getColumnIndex(StudentQueryObject.COLUMN_FIRST_NAME)
+                val studentLastNameColumnIndex =
+                    cursor.getColumnIndex(StudentQueryObject.COLUMN_LAST_NAME)
 
-        if (cursor.moveToNext()) {
-            val studentIdColumnIndex =
-                cursor.getColumnIndex(StudentQueryObject.COLUMN_STUDENT_ID)
-            val studentFirstNameColumnIndex =
-                cursor.getColumnIndex(StudentQueryObject.COLUMN_FIRST_NAME)
-            val studentLastNameColumnIndex =
-                cursor.getColumnIndex(StudentQueryObject.COLUMN_LAST_NAME)
+                val studentId = cursor.getInt(studentIdColumnIndex)
+                val studentFirstName = cursor.getString(studentFirstNameColumnIndex)
+                val studentLastName = cursor.getString(studentLastNameColumnIndex)
 
-            val studentId = cursor.getInt(studentIdColumnIndex)
-            val studentFirstName = cursor.getString(studentFirstNameColumnIndex)
-            val studentLastName = cursor.getString(studentLastNameColumnIndex)
-
-            // Close the cursor
-            cursor.close()
-
-            return Student(
-                studentId = studentId,
-                firstName = studentFirstName,
-                lastName = studentLastName
-            )
+                result.add(
+                    Student(
+                        studentId = studentId,
+                        firstName = studentFirstName,
+                        lastName = studentLastName
+                    )
+                )
+            }
         }
         // Close the cursor
         cursor.close()
-        return null
+        return result
     }
 
     fun getAllStudentInformation(

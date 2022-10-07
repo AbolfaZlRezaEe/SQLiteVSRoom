@@ -1,4 +1,4 @@
-package com.example.sqlitevsroom.sqlite
+package com.example.sqlitevsroom.model.sqlite
 
 object StudentQueryObject {
     const val DATABASE_VERSION = 1
@@ -18,4 +18,6 @@ object StudentQueryObject {
                 "$COLUMN_LAST_NAME TEXT)"
 
     const val QUERY_DELETE_TABLE = "DROP TABLE IF EXIST $TABLE_NAME"
+
+    const val QUERY_SEARCH_WITH_FIRST_NAME = "$COLUMN_FIRST_NAME LIKE ?"
 }

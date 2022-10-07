@@ -1,4 +1,4 @@
-package com.example.sqlitevsroom.sqlite
+package com.example.sqlitevsroom.model.dataclass
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

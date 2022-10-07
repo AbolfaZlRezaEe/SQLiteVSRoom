@@ -1,4 +1,4 @@
-package com.example.sqlitevsroom.sqlite
+package com.example.sqlitevsroom.model.sqlite
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

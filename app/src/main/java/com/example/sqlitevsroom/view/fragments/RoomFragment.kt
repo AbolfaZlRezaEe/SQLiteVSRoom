@@ -1,4 +1,4 @@
-package com.example.sqlitevsroom
+package com.example.sqlitevsroom.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,11 +1,11 @@
-package com.example.sqlitevsroom.view
+package com.example.sqlitevsroom.view.bottomSheets
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.sqlitevsroom.databinding.StudentForumFragmentBinding
-import com.example.sqlitevsroom.sqlite.Student
+import com.example.sqlitevsroom.model.dataclass.Student
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class StudentForumDialogFragment : BottomSheetDialogFragment() {

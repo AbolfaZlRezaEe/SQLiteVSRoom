@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sqlitevsroom.databinding.ItemStudentBinding
-import com.example.sqlitevsroom.sqlite.Student
+import com.example.sqlitevsroom.model.dataclass.Student
 
 class StudentAdapter : RecyclerView.Adapter<StudentViewHolder>() {
     private var students: MutableList<Student> = mutableListOf()
@@ -22,11 +22,13 @@ class StudentAdapter : RecyclerView.Adapter<StudentViewHolder>() {
     fun addStudents(students: List<Student>) {
         this.students.clear()
         this.students.addAll(students)
+        notifyDataSetChanged()
     }
 
     fun addStudent(student: Student) {
-        this.students.add(0, student)
-        notifyItemInserted(0)
+        this.students.add(student)
+        val targetIndex = students.indexOf(student)
+        notifyItemInserted(targetIndex)
     }
 
     fun updateStudent(student: Student) {
@@ -43,6 +45,10 @@ class StudentAdapter : RecyclerView.Adapter<StudentViewHolder>() {
         val targetIndex = students.indexOf(student)
         students.removeAt(targetIndex)
         notifyItemRemoved(targetIndex)
+    }
+
+    fun listIsEmpty(): Boolean {
+        return students.isEmpty()
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, p1: Int): StudentViewHolder {

@@ -1,16 +1,19 @@
-package com.example.sqlitevsroom
+package com.example.sqlitevsroom.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.sqlitevsroom.R
 import com.example.sqlitevsroom.databinding.FragmentSqliteBinding
-import com.example.sqlitevsroom.sqlite.Student
-import com.example.sqlitevsroom.sqlite.StudentDatabaseHelper
-import com.example.sqlitevsroom.sqlite.StudentOperations
-import com.example.sqlitevsroom.view.StudentForumDialogFragment
+import com.example.sqlitevsroom.model.dataclass.Student
+import com.example.sqlitevsroom.model.sqlite.StudentDatabaseHelper
+import com.example.sqlitevsroom.model.sqlite.StudentOperations
+import com.example.sqlitevsroom.model.sqlite.StudentQueryObject
+import com.example.sqlitevsroom.view.bottomSheets.StudentForumDialogFragment
 import com.example.sqlitevsroom.view.recyclerView.StudentAdapter
 import com.google.android.material.snackbar.Snackbar
 
@@ -49,9 +52,9 @@ class SQLiteFragment : Fragment() {
 
     private fun initializeStudentAdapter(students: List<Student>) {
         if (students.isEmpty()) {
-            binding.emptyStateTextView.visibility = View.VISIBLE
+            showEmptyState(true)
         } else {
-            binding.emptyStateTextView.visibility = View.GONE
+            showEmptyState(false)
 
             if (studentAdapter == null) {
                 studentAdapter = StudentAdapter()
@@ -63,6 +66,16 @@ class SQLiteFragment : Fragment() {
             binding.studentsSqliteRecyclerView.adapter = studentAdapter
 
             initAdapterListeners()
+        }
+    }
+
+    private fun showEmptyState(show: Boolean) {
+        if (show) {
+            binding.emptyStateTextView.visibility = View.VISIBLE
+            binding.searchSQLiteEditText.visibility = View.GONE
+        } else {
+            binding.emptyStateTextView.visibility = View.GONE
+            binding.searchSQLiteEditText.visibility = View.VISIBLE
         }
     }
 
@@ -99,6 +112,9 @@ class SQLiteFragment : Fragment() {
                 if (itemDeleted) {
                     requireActivity().runOnUiThread {
                         studentAdapter?.removeStudent(student)
+                        if (studentAdapter?.listIsEmpty()!!) {
+                            showEmptyState(true)
+                        }
                     }
                 } else {
                     Snackbar.make(
@@ -126,6 +142,7 @@ class SQLiteFragment : Fragment() {
                             // Bring operation back to the main thread to do ui stuff
                             requireActivity().runOnUiThread {
                                 studentAdapter?.addStudent(finalStudentInformation)
+                                showEmptyState(false)
                                 binding.studentsSqliteRecyclerView.smoothScrollToPosition(0)
                                 bottomSheet.dismiss()
                             }
@@ -136,6 +153,29 @@ class SQLiteFragment : Fragment() {
                         }
                     }
                 }.show(childFragmentManager, null)
+        }
+
+        binding.searchSQLiteEditText.addTextChangedListener { editable ->
+            if (editable != null) {
+                if (editable.toString().isEmpty()) {
+                    studentDatabaseHelper.doOperation {
+                        val students = StudentOperations
+                            .getAllStudentInformation(database = studentDatabaseHelper)
+                        requireActivity().runOnUiThread { initializeStudentAdapter(students) }
+                    }
+                } else {
+                    studentDatabaseHelper.doOperation {
+                        val searchedStudents = StudentOperations.searchStudentFromDatabase(
+                            database = studentDatabaseHelper,
+                            whichPropertyForCondition = StudentQueryObject.QUERY_SEARCH_WITH_FIRST_NAME,
+                            valueOfPropertyShouldMatch = arrayOf("%$editable%"),
+                        )
+                        requireActivity().runOnUiThread {
+                            studentAdapter?.addStudents(searchedStudents)
+                        }
+                    }
+                }
+            }
         }
     }
 
