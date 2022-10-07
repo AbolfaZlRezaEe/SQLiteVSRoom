@@ -1,7 +1,7 @@
 package com.example.sqlitevsroom.model.sqlite
 
 import android.content.ContentValues
-import com.example.sqlitevsroom.model.dataclass.Student
+import com.example.sqlitevsroom.model.dataclass.StudentSQLiteDataclass
 
 object StudentOperations {
 
@@ -27,7 +27,7 @@ object StudentOperations {
         whichPropertyForCondition: String,
         valueOfPropertyShouldMatch: Array<String>,
         sortOrder: String = "${StudentQueryObject.COLUMN_STUDENT_ID} ASC"
-    ): List<Student> {
+    ): List<StudentSQLiteDataclass> {
         val cursor = database.readableDatabase.query(
             StudentQueryObject.TABLE_NAME,
             informationThatYouNeed,
@@ -37,7 +37,7 @@ object StudentOperations {
             null /* I don't wanna Having feature */,
             sortOrder
         )
-        val result = mutableListOf<Student>()
+        val result = mutableListOf<StudentSQLiteDataclass>()
         with(cursor) {
             while (moveToNext()) {
                 val studentIdColumnIndex =
@@ -52,7 +52,7 @@ object StudentOperations {
                 val studentLastName = cursor.getString(studentLastNameColumnIndex)
 
                 result.add(
-                    Student(
+                    StudentSQLiteDataclass(
                         studentId = studentId,
                         firstName = studentFirstName,
                         lastName = studentLastName
@@ -69,7 +69,7 @@ object StudentOperations {
         database: StudentDatabaseHelper,
         informationThatYouNeed: Array<String>? = null,
         sortOrder: String = "${StudentQueryObject.COLUMN_STUDENT_ID} ASC"
-    ): List<Student> {
+    ): List<StudentSQLiteDataclass> {
         val cursor = database.readableDatabase.query(
             StudentQueryObject.TABLE_NAME,
             informationThatYouNeed,
@@ -80,7 +80,7 @@ object StudentOperations {
             sortOrder
         )
 
-        val students = mutableListOf<Student>()
+        val students = mutableListOf<StudentSQLiteDataclass>()
         with(cursor) {
             while (moveToNext()) {
                 val studentIdColumnIndex =
@@ -96,7 +96,7 @@ object StudentOperations {
 
 
                 students.add(
-                    Student(
+                    StudentSQLiteDataclass(
                         studentId = studentId,
                         firstName = studentFirstName,
                         lastName = studentLastName
@@ -123,7 +123,7 @@ object StudentOperations {
 
     fun updateStudent(
         database: StudentDatabaseHelper,
-        student: Student
+        student: StudentSQLiteDataclass
     ): Boolean {
         val contentValue = ContentValues().apply {
             put(StudentQueryObject.COLUMN_FIRST_NAME, student.firstName)

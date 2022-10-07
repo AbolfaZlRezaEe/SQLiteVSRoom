@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Student(
+data class StudentSQLiteDataclass(
     var studentId: Int = 0,
     var firstName: String,
     var lastName: String

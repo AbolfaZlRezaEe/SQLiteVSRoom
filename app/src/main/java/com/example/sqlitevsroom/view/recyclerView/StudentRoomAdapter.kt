@@ -4,34 +4,34 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sqlitevsroom.databinding.ItemStudentBinding
-import com.example.sqlitevsroom.model.dataclass.Student
+import com.example.sqlitevsroom.model.dataclass.StudentRoomDataclass
 
-class StudentAdapter : RecyclerView.Adapter<StudentViewHolder>() {
-    private var students: MutableList<Student> = mutableListOf()
-    private var clickListenerCallback: ((student: Student) -> Unit)? = null
-    private var onLongClickListenerCallback: ((student: Student) -> Unit)? = null
+class StudentRoomAdapter : RecyclerView.Adapter<StudentViewHolder>() {
+    private var students: MutableList<StudentRoomDataclass> = mutableListOf()
+    private var clickListenerCallback: ((student: StudentRoomDataclass) -> Unit)? = null
+    private var onLongClickListenerCallback: ((student: StudentRoomDataclass) -> Unit)? = null
 
-    fun setStudentClickListener(clickListenerCallback: (student: Student) -> Unit) {
+    fun setStudentClickListener(clickListenerCallback: (student: StudentRoomDataclass) -> Unit) {
         this.clickListenerCallback = clickListenerCallback
     }
 
-    fun setStudentLongClickListener(onLongClickListenerCallback: (student: Student) -> Unit) {
+    fun setStudentLongClickListener(onLongClickListenerCallback: (student: StudentRoomDataclass) -> Unit) {
         this.onLongClickListenerCallback = onLongClickListenerCallback
     }
 
-    fun addStudents(students: List<Student>) {
+    fun addStudents(students: List<StudentRoomDataclass>) {
         this.students.clear()
         this.students.addAll(students)
         notifyDataSetChanged()
     }
 
-    fun addStudent(student: Student) {
+    fun addStudent(student: StudentRoomDataclass) {
         this.students.add(student)
         val targetIndex = students.indexOf(student)
         notifyItemInserted(targetIndex)
     }
 
-    fun updateStudent(student: Student) {
+    fun updateStudent(student: StudentRoomDataclass) {
         this.students.find { it.studentId == student.studentId }
             ?.let {
                 it.firstName = student.firstName
@@ -41,7 +41,7 @@ class StudentAdapter : RecyclerView.Adapter<StudentViewHolder>() {
         notifyItemChanged(targetIndex)
     }
 
-    fun removeStudent(student: Student) {
+    fun removeStudent(student: StudentRoomDataclass) {
         val targetIndex = students.indexOf(student)
         students.removeAt(targetIndex)
         notifyItemRemoved(targetIndex)

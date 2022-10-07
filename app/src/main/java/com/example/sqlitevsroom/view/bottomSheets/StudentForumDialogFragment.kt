@@ -5,28 +5,39 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.sqlitevsroom.databinding.StudentForumFragmentBinding
-import com.example.sqlitevsroom.model.dataclass.Student
+import com.example.sqlitevsroom.model.dataclass.StudentRoomDataclass
+import com.example.sqlitevsroom.model.dataclass.StudentSQLiteDataclass
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class StudentForumDialogFragment : BottomSheetDialogFragment() {
     private var _binding: StudentForumFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private var student: Student? = null
-    private var onSubmitClickListener: ((student: Student, bottomSheet: StudentForumDialogFragment) -> Unit)? =
+    private var sqliteStudent: StudentSQLiteDataclass? = null
+    private var roomStudent: StudentRoomDataclass? = null
+
+    private var onSubmitClickListener: ((
+        studentId: Int?,
+        firstName: String,
+        lastName: String,
+        bottomSheet: StudentForumDialogFragment
+    ) -> Unit)? =
         null
 
     companion object {
-        private const val KEY_STUDENT_INFORMATION = "STUDENT_INFORMATION_KEY"
+        const val KEY_SQLITE_STUDENT_INFORMATION = "STUDENT_SQLITE_INFORMATION_KEY"
+        const val KEY_ROOM_STUDENT_INFORMATION = "STUDENT_ROOM_INFORMATION_KEY"
 
         fun newInstance(
-            student: Student? = null,
-            submitClickListener: (student: Student, bottomSheet: StudentForumDialogFragment) -> Unit
+            bundle: Bundle? = null,
+            submitClickListener: (
+                studentId: Int?,
+                firstName: String,
+                lastName: String, bottomSheet: StudentForumDialogFragment
+            ) -> Unit
         ): StudentForumDialogFragment {
             return StudentForumDialogFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(KEY_STUDENT_INFORMATION, student)
-                }
+                arguments = bundle
                 setSubmitClickListener(submitClickListener)
             }
         }
@@ -60,35 +71,58 @@ class StudentForumDialogFragment : BottomSheetDialogFragment() {
             } else {
                 binding.warningTextView.visibility = View.GONE
             }
-            if (student != null) {
-                student?.let {
-                    it.firstName = binding.firstNameEditText.text.toString()
-                    it.lastName = binding.lastNameEditText.text.toString()
-                }
-            } else {
-                student = Student(
-                    firstName = binding.firstNameEditText.text.toString(),
-                    lastName = binding.lastNameEditText.text.toString()
+
+            if (onSubmitClickListener != null) {
+                onSubmitClickListener?.invoke(
+                    getStudentId(),
+                    binding.firstNameEditText.text.toString(),
+                    binding.lastNameEditText.text.toString(),
+                    this
                 )
             }
-            if (onSubmitClickListener != null) {
-                onSubmitClickListener?.invoke(student!!, this)
-            }
+        }
+    }
+
+    private fun getStudentId(): Int? {
+        return if (sqliteStudent != null) {
+            sqliteStudent?.studentId!!
+        } else if (roomStudent != null) {
+            roomStudent?.studentId!!
+        } else {
+            null
         }
     }
 
     private fun readFromBundleIfExist() {
-        val studentInformation = arguments?.getParcelable<Student>(KEY_STUDENT_INFORMATION)
-        studentInformation?.let {
-            this.student = it
-            binding.firstNameEditText.setText(it.firstName)
-            binding.lastNameEditText.setText(it.lastName)
+        val sqliteStudentInformation =
+            arguments?.getParcelable<StudentSQLiteDataclass>(KEY_SQLITE_STUDENT_INFORMATION)
+        if (sqliteStudentInformation != null) {
+            this.sqliteStudent = sqliteStudentInformation
+            binding.firstNameEditText.setText(sqliteStudentInformation.firstName)
+            binding.lastNameEditText.setText(sqliteStudentInformation.lastName)
             binding.idMaterialCardView.visibility = View.VISIBLE
-            binding.studentIdTextView.text = it.studentId.toString()
+            binding.studentIdTextView.text = sqliteStudentInformation.studentId.toString()
+        } else {
+            val roomStudentInformation =
+                arguments?.getParcelable<StudentRoomDataclass>(KEY_ROOM_STUDENT_INFORMATION)
+            if (roomStudentInformation != null) {
+                this.roomStudent = roomStudentInformation
+                binding.firstNameEditText.setText(roomStudentInformation.firstName)
+                binding.lastNameEditText.setText(roomStudentInformation.lastName)
+                binding.idMaterialCardView.visibility = View.VISIBLE
+                binding.studentIdTextView.text = roomStudentInformation.studentId.toString()
+            }
         }
     }
 
-    fun setSubmitClickListener(callBack: (student: Student, bottomSheet: StudentForumDialogFragment) -> Unit) {
+    fun setSubmitClickListener(
+        callBack: (
+            studentId: Int?,
+            firstName: String,
+            lastName: String,
+            bottomSheet: StudentForumDialogFragment
+        ) -> Unit
+    ) {
         this.onSubmitClickListener = callBack
     }
 

@@ -9,12 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sqlitevsroom.R
 import com.example.sqlitevsroom.databinding.FragmentSqliteBinding
-import com.example.sqlitevsroom.model.dataclass.Student
+import com.example.sqlitevsroom.model.dataclass.StudentSQLiteDataclass
 import com.example.sqlitevsroom.model.sqlite.StudentDatabaseHelper
 import com.example.sqlitevsroom.model.sqlite.StudentOperations
 import com.example.sqlitevsroom.model.sqlite.StudentQueryObject
 import com.example.sqlitevsroom.view.bottomSheets.StudentForumDialogFragment
-import com.example.sqlitevsroom.view.recyclerView.StudentAdapter
+import com.example.sqlitevsroom.view.recyclerView.StudentSQLiteAdapter
 import com.google.android.material.snackbar.Snackbar
 
 class SQLiteFragment : Fragment() {
@@ -22,7 +22,7 @@ class SQLiteFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var studentDatabaseHelper: StudentDatabaseHelper
-    private var studentAdapter: StudentAdapter? = null
+    private var studentSQLiteAdapter: StudentSQLiteAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,20 +50,20 @@ class SQLiteFragment : Fragment() {
         }
     }
 
-    private fun initializeStudentAdapter(students: List<Student>) {
+    private fun initializeStudentAdapter(students: List<StudentSQLiteDataclass>) {
         if (students.isEmpty()) {
             showEmptyState(true)
         } else {
             showEmptyState(false)
 
-            if (studentAdapter == null) {
-                studentAdapter = StudentAdapter()
+            if (studentSQLiteAdapter == null) {
+                studentSQLiteAdapter = StudentSQLiteAdapter()
             }
-            studentAdapter?.addStudents(students)
+            studentSQLiteAdapter?.addStudents(students)
 
             binding.studentsSqliteRecyclerView.layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            binding.studentsSqliteRecyclerView.adapter = studentAdapter
+            binding.studentsSqliteRecyclerView.adapter = studentSQLiteAdapter
 
             initAdapterListeners()
         }
@@ -80,18 +80,26 @@ class SQLiteFragment : Fragment() {
     }
 
     private fun initAdapterListeners() {
-        studentAdapter?.setStudentClickListener { student ->
+        studentSQLiteAdapter?.setStudentClickListener { student ->
+            val bundle = Bundle().apply {
+                putParcelable(StudentForumDialogFragment.KEY_SQLITE_STUDENT_INFORMATION, student)
+            }
             StudentForumDialogFragment
-                .newInstance(student) { finalStudentInformation, bottomSheet ->
+                .newInstance(bundle) { studentId, firstName, lastName, bottomSheet ->
                     studentDatabaseHelper.doOperation {
+                        val finalStudent = StudentSQLiteDataclass(
+                            studentId = studentId!!,
+                            firstName = firstName,
+                            lastName = lastName
+                        )
                         val itemUpdated = StudentOperations.updateStudent(
                             database = studentDatabaseHelper,
-                            finalStudentInformation
+                            finalStudent
                         )
                         if (itemUpdated) {
                             // Bring operation back to the main thread to do ui stuff
                             requireActivity().runOnUiThread {
-                                studentAdapter?.updateStudent(finalStudentInformation)
+                                studentSQLiteAdapter?.updateStudent(finalStudent)
                                 bottomSheet.dismiss()
                             }
                         } else {
@@ -103,7 +111,7 @@ class SQLiteFragment : Fragment() {
                 }.show(childFragmentManager, null)
         }
 
-        studentAdapter?.setStudentLongClickListener { student ->
+        studentSQLiteAdapter?.setStudentLongClickListener { student ->
             studentDatabaseHelper.doOperation {
                 val itemDeleted = StudentOperations.deleteStudent(
                     database = studentDatabaseHelper,
@@ -111,8 +119,8 @@ class SQLiteFragment : Fragment() {
                 )
                 if (itemDeleted) {
                     requireActivity().runOnUiThread {
-                        studentAdapter?.removeStudent(student)
-                        if (studentAdapter?.listIsEmpty()!!) {
+                        studentSQLiteAdapter?.removeStudent(student)
+                        if (studentSQLiteAdapter?.listIsEmpty()!!) {
                             showEmptyState(true)
                         }
                     }
@@ -130,18 +138,20 @@ class SQLiteFragment : Fragment() {
     private fun initListeners() {
         binding.addSqliteStudentExtendedFab.setOnClickListener {
             StudentForumDialogFragment
-                .newInstance { finalStudentInformation, bottomSheet ->
+                .newInstance { _, firstName, lastName, bottomSheet ->
                     studentDatabaseHelper.doOperation {
-                        val studentId = StudentOperations.insertStudent(
+                        val resultId = StudentOperations.insertStudent(
                             database = studentDatabaseHelper,
-                            firstName = finalStudentInformation.firstName,
-                            lastName = finalStudentInformation.lastName,
+                            firstName = firstName,
+                            lastName = lastName,
                         )
-                        if (studentId != -1L) {
-                            finalStudentInformation.studentId = studentId.toInt()
+                        if (resultId != -1L) {
+                            val result = StudentSQLiteDataclass(
+                                resultId.toInt(), firstName, lastName
+                            )
                             // Bring operation back to the main thread to do ui stuff
                             requireActivity().runOnUiThread {
-                                studentAdapter?.addStudent(finalStudentInformation)
+                                studentSQLiteAdapter?.addStudent(result)
                                 showEmptyState(false)
                                 binding.studentsSqliteRecyclerView.smoothScrollToPosition(0)
                                 bottomSheet.dismiss()
@@ -171,7 +181,7 @@ class SQLiteFragment : Fragment() {
                             valueOfPropertyShouldMatch = arrayOf("%$editable%"),
                         )
                         requireActivity().runOnUiThread {
-                            studentAdapter?.addStudents(searchedStudents)
+                            studentSQLiteAdapter?.addStudents(searchedStudents)
                         }
                     }
                 }

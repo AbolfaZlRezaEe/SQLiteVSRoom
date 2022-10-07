@@ -38,6 +38,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
+    <EditText
+        android:id="@+id/searchRoomEditText"
+        android:layout_width="0dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/edittext_background"
+        android:ellipsize="end"
+        android:fontFamily="@font/roboto_medium"
+        android:hint="@string/searchSomething"
+        android:maxLines="1"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColor="@color/lightOrange"
+        android:textColorHint="@color/lightOrange"
+        app:layout_constraintBottom_toBottomOf="@+id/add_room_student_fab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/add_room_student_fab"
+        app:layout_constraintTop_toTopOf="@+id/add_room_student_fab" />
+
     <TextView
         android:id="@+id/emptyStateTextView"
         android:layout_width="wrap_content"
@@ -53,16 +73,14 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/addRoomStudentExtendedFab"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_room_student_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:fontFamily="@font/roboto_medium"
-        android:text="@string/addStudent"
-        android:textColor="@color/blackOrange"
+        android:src="@drawable/ic_add_person_24dp"
         app:backgroundTint="@color/normalOrange"
-        app:icon="@drawable/ic_add_person_24dp"
         app:iconTint="@color/blackOrange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
