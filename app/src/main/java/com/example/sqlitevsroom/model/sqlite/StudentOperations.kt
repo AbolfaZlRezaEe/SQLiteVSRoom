@@ -111,7 +111,7 @@ object StudentOperations {
     fun deleteStudent(
         database: StudentDatabaseHelper,
         id: Int
-    ): Boolean {
+    ): Boolean/* true: object is updated. false: failed or not found */ {
         val selection = "${StudentQueryObject.COLUMN_STUDENT_ID} = ?"
         val selectionArg = arrayOf("$id")
         return database.writableDatabase.delete(
@@ -124,7 +124,7 @@ object StudentOperations {
     fun updateStudent(
         database: StudentDatabaseHelper,
         student: StudentSQLiteDataclass
-    ): Boolean {
+    ): Boolean/* true: object is updated. false: failed or not found */ {
         val contentValue = ContentValues().apply {
             put(StudentQueryObject.COLUMN_FIRST_NAME, student.firstName)
             put(StudentQueryObject.COLUMN_LAST_NAME, student.lastName)
